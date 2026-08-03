@@ -9,25 +9,24 @@ on:
 
 jobs:
   build:
-    runs-on: macos-latest
+    runs-on: macos-14
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Xcode
-        run: sudo xcode-select --switch /Applications/Xcode.app
-
-      - name: Setup Theos
+      - name: Install Theos
         run: |
-          THEOS=/opt/theos
-          sudo git clone --recursive https://github.com/theos/theos.git $THEOS
-          echo "THEOS=$THEOS" >> $GITHUB_ENV
+          sudo git clone --recursive https://github.com/theos/theos.git /opt/theos
+          sudo chown -R $(whoami) /opt/theos
 
-      - name: Clean
-        run: make clean
+      - name: Clean Build Artifacts
+        run: |
+          rm -rf .theos
+          rm -rf theos
+          make clean THEOS=/opt/theos || true
 
       - name: Build Package
-        run: make package
+        run: make package THEOS=/opt/theos
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
