@@ -1,4 +1,3 @@
-# .github/workflows/build.yml
 name: Build OpenHud
 
 on:
@@ -15,8 +14,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Xcode
+        run: sudo xcode-select --switch /Applications/Xcode.app
+
       - name: Setup Theos
-        uses: waruhachi/theos-action@main
+        run: |
+          export THEOS=/opt/theos
+          sudo git clone --recursive https://github.com/theos/theos.git $THEOS
+          echo "THEOS=$THEOS" >> $GITHUB_ENV
+
+      - name: Clean
+        run: make clean
 
       - name: Build Package
         run: make package
