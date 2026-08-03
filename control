@@ -1,0 +1,10 @@
+# control
+Package: com.locationovo.openhud
+Name: OpenHud
+Version: 1.0.0
+Architecture: iphoneos-arm64
+Description: Metal HUD enabler 为Metal应用开启Metal Hud
+Maintainer: locationovo
+Author: locationovo
+Section: Tweaks
+Depends: mobilesubstrate, preferenceloader, applist
